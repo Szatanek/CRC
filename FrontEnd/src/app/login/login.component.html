@@ -1,0 +1,19 @@
+<div class="login-bg"></div>
+
+<div class="login-container">
+  <div class="login-box">
+    <h1>Sign in</h1>
+    <input class="form-control" [(ngModel)]="login" placeholder="Login">
+    <input class="form-control" type="password" [(ngModel)]="password" placeholder="Password">
+    <div class="actions">
+      <a href="#">Reset password</a>
+      <button class="btn" (click)="loginUser()">Sign in</button>
+    </div>
+    <div class="remember">
+      <input id="rem" type="checkbox">
+      <label for="rem">Remember me</label>
+    </div>
+  </div>
+</div>
+
+

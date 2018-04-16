@@ -1,0 +1,35 @@
+<button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
+  New permission
+</button>
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Request for new permission</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label>Server name</label>
+          <select class="form-control" [(ngModel)]="newPermission.serverName">
+            <option *ngFor="let server of servers" [ngValue]="server"> {{server}} </option>
+          </select>
+          <label>Server address</label>
+          <input class="form-control" [(ngModel)]="newPermission.serverAddress"/>
+          <label>Permissions</label>
+          <select class="form-control" [(ngModel)]="newPermission.permission">
+            <option *ngFor="let permission of permissions" [ngValue]="permission"> {{permission}} </option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label>Additional info</label>
+          <textarea class="form-control" [(ngModel)]="newPermission.additionalInfo">
+            </textarea>
+        </div>
+      </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="add()">Add permission</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+  </div>

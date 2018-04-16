@@ -1,0 +1,31 @@
+<div class="wrapper">
+  <aside>
+    <div class="logo">
+      <img src="../../../assets/images/logo.png" width="60">
+    </div>
+    <nav>
+      <ul *ngIf="isUser()">
+        <li><a [routerLink]="['/userForm/',currentUser.id,'userPermissions']" routerLinkActive="active">My permissions</a></li>
+        <li><a [routerLink]="['/userForm/',currentUser.id,'userRequestes']" routerLinkActive="active">My requestes</a></li>
+      </ul>
+      <ul *ngIf="isApprover()">
+        <li><a [routerLink]="['/userForm/',currentUser.id,'requests']" routerLinkActive="active">Users Requests</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <header>
+    <div class="user">
+        <img src="../../../assets/images/user.png" width="35">
+        <div>
+          <p>Hello</p>
+          <p>{{currentUser.name}}</p>
+        </div>
+    </div>
+    <div class="logout" (click)="logOut()">
+      <img src="../../../assets/images/logout.svg" width="40">
+    </div>
+  </header>
+  <main *ngIf="currentUser.isLogin!=undefined">
+    <router-outlet></router-outlet>
+  </main>
+</div>

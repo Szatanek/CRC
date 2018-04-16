@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  run-db:
+    image: microsoft/mssql-server-linux:2017-latest
+    container_name: crc.dev.db
+    environment:
+        - ACCEPT_EULA=Y
+        - MSSQL_PID=Express
+        - SA_PASSWORD=crc_2018
+    expose:
+        - 1433
+  crc:
+    image: crc
+    build:
+      context: .
+      dockerfile: CRC/Dockerfile

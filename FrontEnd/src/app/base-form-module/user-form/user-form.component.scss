@@ -1,0 +1,93 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  grid-template-rows: 70px auto;
+  grid-template-areas: 'aside header' 'aside main';
+  min-height: 100vh;
+  background: #e4e4e4;
+
+  aside {
+    background: #2983bf;
+    grid-area: aside;
+
+    .logo {
+      padding: 30px;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+
+      li {
+        margin: 5px 0;
+
+        a {
+          padding-left: 30px;
+          border-left: 5px solid transparent;
+          display: block;
+          line-height: 40px;
+          color: #fff;
+
+          &:hover, &.active {
+            border-color: #fff;
+          }
+        }
+      }
+    }
+  }
+
+  header {
+    background: #fff;
+    grid-area: header;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .user {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 20px;
+
+      img {
+        margin-right: 10px;
+        vertical-align: top
+      }
+
+      p {
+        margin: 0;
+        padding: 0;
+        font-size: 14px;
+        line-height: 16px;
+        text-transform: uppercase;
+        &:first-child {
+          font-size: 12px;
+          color: #999
+        }
+      }
+    }
+
+    .logout {
+      height: 70px;
+      width: 70px;
+      border-left: 1px solid #eee;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        transform: rotate(180deg)
+      }
+
+      &:hover {
+        background: #f4f4f4;
+        cursor: pointer;
+      }
+    }
+  }
+
+  main {
+    grid-area: main;
+    padding: 30px 10%;
+  }
+}

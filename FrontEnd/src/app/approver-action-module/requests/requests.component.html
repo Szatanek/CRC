@@ -1,0 +1,32 @@
+<h2>User requests</h2>
+<div class="white-bg">
+<table class="table">
+    <thead>
+        <tr>
+          <th>Id</th>
+            <th>Server Name</th>
+            <th>Server Address</th>
+            <th>Permission</th>
+            <th>Additional Info</th>
+            <th>User Name</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let request of usersRequestes">
+        <td>{{request.id}}</td>
+        <td>{{request.serverName}}</td>
+        <td>{{request.serverAddress}}</td>
+        <td>{{request.permission}}</td>
+        <td>{{request.additionalInfo}}</td>
+        <td>{{request.name}}</td>
+        <td>{{request.status}}</td>
+        <td>
+            <button class="btn btn-sm btn-danger" (click)="reject(request)" *ngIf="isAcctionFinished(request.status)">Reject</button>
+            <button class="btn btn-sm btn-primary" (click)="accept(request)" *ngIf="isAcctionFinished(request.status)">Approve</button>
+        </td>
+    </tr>
+</tbody>
+</table>
+</div>

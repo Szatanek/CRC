@@ -1,0 +1,220 @@
+{
+  "users": [
+    {
+      "name": "Henryk Ciekawski",
+      "login": "henryk",
+      "password": "henryk",
+      "id": 1,
+      "isLogin": false
+    },
+    {
+      "name": "Staszek Upierdliwy",
+      "login": "staszek",
+      "password": "staszek",
+      "id": 2,
+      "isLogin": false
+    },
+    {
+      "name": "magdalena czmok",
+      "login": "czmok",
+      "password": "czmok",
+      "id": 3,
+      "isLogin": false
+    },
+    {
+      "name": "admin",
+      "login": "admin",
+      "password": "admin",
+      "id": 4,
+      "isLogin": true
+    }
+  ],
+  "roles": [
+    {
+      "id": 1,
+      "login": "admin",
+      "roles": [
+        "user",
+        "approver"
+      ]
+    },
+    {
+      "id": 2,
+      "login": "czmok",
+      "roles": [
+        "user",
+        "approver"
+      ]
+    },
+    {
+      "id": 3,
+      "login": "staszek",
+      "roles": [
+        "user"
+      ]
+    },
+    {
+      "id": 4,
+      "login": "henryk",
+      "roles": [
+        "approver"
+      ]
+    }
+  ],
+  "requestes": [
+    {
+      "serverName": "TEST",
+      "serverAddress": "testlogin",
+      "permission": "READ ONLY",
+      "login": "czmok",
+      "status": "Approve",
+      "id": 1
+    },
+    {
+      "serverName": "TEST",
+      "serverAddress": "staszek",
+      "permission": "READ ONLY",
+      "additionalInfo": "asd",
+      "login": "staszek",
+      "status": "Reject",
+      "id": 2
+    },
+    {
+      "serverName": "TEST",
+      "serverAddress": "staszekapprovw",
+      "permission": "READ ONLY",
+      "login": "staszek",
+      "status": "Approve",
+      "id": 3
+    },
+    {
+      "serverName": "PROD",
+      "serverAddress": "12",
+      "permission": "READ ONLY",
+      "login": "admin",
+      "status": "Reject",
+      "id": 4
+    },
+    {
+      "serverName": "ACC",
+      "serverAddress": "1111",
+      "permission": "READ ONLY",
+      "login": "admin",
+      "status": "Approve",
+      "id": 5
+    },
+    {
+      "serverName": "PROD",
+      "serverAddress": "2222",
+      "permission": "ADMINISTRATOR",
+      "login": "staszek",
+      "status": "Approve",
+      "id": 6
+    },
+    {
+      "serverName": "PROD",
+      "serverAddress": "sdf",
+      "permission": "ADMINISTRATOR",
+      "login": "admin",
+      "status": "Approve",
+      "id": 7
+    },
+    {
+      "serverName": "PROD",
+      "serverAddress": "zzzzz",
+      "permission": "READ ONLY",
+      "login": "admin",
+      "status": "Approve",
+      "id": 8
+    },
+    {
+      "serverName": "PROD",
+      "serverAddress": "eeeee",
+      "permission": "ADMINISTRATOR",
+      "login": "admin",
+      "status": "Approve",
+      "id": 9
+    }
+  ],
+  "provisioned": [
+    {
+      "serverName": "TEST",
+      "serverAddress": "testlogin",
+      "permission": "READ ONLY",
+      "login": "czmok",
+      "status": "Provisioned",
+      "id": 1
+    },
+    {
+      "serverName": "TEST",
+      "serverAddress": "staszekapprovw",
+      "permission": "READ ONLY",
+      "login": "staszek",
+      "status": "Provisioned",
+      "id": 3
+    },
+    {
+      "serverName": "PROD",
+      "serverAddress": "3434",
+      "permission": "READ ONLY",
+      "additionalInfo": "ff",
+      "login": "admin",
+      "status": "Provisioned",
+      "id": 4
+    },
+    {
+      "serverName": "ACC",
+      "serverAddress": "1111",
+      "permission": "READ ONLY",
+      "login": "admin",
+      "status": "Provisioned",
+      "id": 5
+    },
+    {
+      "serverName": "PROD",
+      "serverAddress": "2222",
+      "permission": "ADMINISTRATOR",
+      "login": "staszek",
+      "status": "Provisioned",
+      "id": 6
+    },
+    {
+      "serverName": "PROD",
+      "serverAddress": "zzzzz",
+      "permission": "READ ONLY",
+      "login": "admin",
+      "status": "Provisioned",
+      "id": 8
+    },
+    {
+      "serverName": "PROD",
+      "serverAddress": "sdf",
+      "permission": "ADMINISTRATOR",
+      "login": "admin",
+      "status": "Provisioned",
+      "id": 7
+    },
+    {
+      "serverName": "PROD",
+      "serverAddress": "eeeee",
+      "permission": "ADMINISTRATOR",
+      "login": "admin",
+      "status": "Provisioned",
+      "id": 9
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+  "servers": [
+    "TEST",
+    "PROD",
+    "ACC",
+    "DEV"
+  ],
+  "permissions": [
+    "READ ONLY",
+    "ADMINISTRATOR",
+    "CUSTOM"
+  ]
+}

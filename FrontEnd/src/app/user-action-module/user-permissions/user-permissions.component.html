@@ -1,0 +1,21 @@
+<h2>My permissions</h2>
+<div class="white-bg">
+<table class="table">
+    <thead>
+        <tr>
+            <th>Server Name</th>
+            <th>Server Address</th>
+            <th>Permission</th>
+            <th>Additional Info</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let permission of permissions">
+        <td>{{permission.serverName}}</td>
+        <td>{{permission.serverAddress}}</td>
+        <td>{{permission.permission}}</td>
+        <td>{{permission.additionalInfo}}</td>
+    </tr>
+</tbody>
+</table>
+</div>
