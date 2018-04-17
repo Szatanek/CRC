@@ -16,5 +16,6 @@ namespace CRC.Repository.Models
         public StatusEnum Status { get; set;  }
         public string AdditionalInfo { get; set; }
         public DateTime RequestedAt { get; set; }
+        public string Reason { get; set; }
     }
 }
