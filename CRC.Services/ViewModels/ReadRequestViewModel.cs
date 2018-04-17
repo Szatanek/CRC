@@ -11,5 +11,6 @@ namespace CRC.Services.ViewModels
         public string AdditionalInfo { get; set; }
         public int UserId { get; set; }
         public string Name { get; set; } // to jest nazwa usera - koledzy z frontu to maja fantazje...
+        public string RequestedAt { get; set; }
     }
 }

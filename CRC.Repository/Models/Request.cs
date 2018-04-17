@@ -1,4 +1,5 @@
-﻿using CRC.Repository.Models.Base;
+﻿using System;
+using CRC.Repository.Models.Base;
 using System.ComponentModel.DataAnnotations.Schema;
 using CRC.Repository.Enums;
 
@@ -14,5 +15,6 @@ namespace CRC.Repository.Models
         public virtual User User { get; set; } //zmienilem tu Login na User      
         public StatusEnum Status { get; set;  }
         public string AdditionalInfo { get; set; }
+        public DateTime RequestedAt { get; set; }
     }
 }

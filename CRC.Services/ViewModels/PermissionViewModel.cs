@@ -9,5 +9,6 @@ namespace CRC.Services.ViewModels
         public string Permission { get; set; }
         public int UserId { get; set; }            
         public string AdditionalInfo { get; set; }
+        public string ApprovedAt { get; set; }
     }
 }
