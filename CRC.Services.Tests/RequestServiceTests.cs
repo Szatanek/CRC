@@ -1,5 +1,7 @@
-﻿using CRC.Repository.Abstract;
+﻿using System.Linq.Expressions;
+using CRC.Repository.Abstract;
 using CRC.Repository.Models;
+using CRC.Services.Exceptions;
 using CRC.Services.Services;
 using Moq;
 using NUnit.Framework;
@@ -36,14 +38,27 @@ namespace CRC.Services.Tests
             const string reason = "Too much priviledges on Production Environment";
             var requestRepositoryMock = new Mock<IGenericRepository<Request>>();
             var service = new RequestService(requestRepositoryMock.Object, null);
+            var testRequest = new Request
+            {
+                Id = requestId
+            };
 
-            // TODO: Setup requestRepositoryMock to return Request when getting it by requestId.
+            requestRepositoryMock.Setup(r => r.GetById(requestId))
+                .Returns(testRequest);
 
             // When
-            service.Reject(requestId);
+            service.Reject(requestId, reason);
 
-            // TODO: Verify that edited request has assigned Reason.
             // Then
+            requestRepositoryMock.Verify(
+                repository => repository.Edit(
+                    It.Is<Request>(request => VerifyEditRequest(request, requestId, reason))),
+                Times.Once);
+        }
+
+        private static bool VerifyEditRequest(Request request, int requestId, string reason)
+        {
+            return request.Id == requestId && request.Reason == reason;
         }
 
         /// <summary>
@@ -54,7 +69,8 @@ namespace CRC.Services.Tests
         /// W sekcji Then należy zweryfikować, czy lokalna metoda Reject wyrzuci wyjątek typu 'ReasonRequiredWhenReject'.
         /// </summary>
         /// <param name="reason"></param>
-        [Test]
+        [TestCase(null)]
+        [TestCase("")]
         public void ShouldThrowExceptionWhenReasonIsNullOrEmpty(string reason)
         {
             // Given
@@ -64,11 +80,11 @@ namespace CRC.Services.Tests
             // When
             void Reject()
             {
-                service.Reject(requestId);
+                service.Reject(requestId, reason);
             }
 
-            // TODO: Assert that exception of type 'ReasonRequiredWhenReject' is thrown.
             // Then
+            Assert.That(Reject, Throws.InstanceOf<ReasonRequiredWhenRejectException>());
         }
     }
 }

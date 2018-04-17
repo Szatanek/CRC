@@ -6,6 +6,7 @@ using CRC.Services.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using CRC.Repository.Enums;
+using CRC.Services.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace CRC.Services.Services
@@ -50,10 +51,16 @@ namespace CRC.Services.Services
             _permissionRepository.Add(provisionedPermission);
         }
 
-        public void Reject(int id)
+        public void Reject(int id, string reason)
         {
+            if (string.IsNullOrEmpty(reason))
+            {
+                throw new ReasonRequiredWhenRejectException();
+            }
+
             var request = _requestRepository.GetById(id);
             request.Status = StatusEnum.Rejected;
+            request.Reason = reason;
             _requestRepository.Edit(request);           
         }
 

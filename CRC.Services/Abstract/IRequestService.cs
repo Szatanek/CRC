@@ -9,7 +9,7 @@ namespace CRC.Services.Abstract
         IEnumerable<ReadRequestViewModel> GetMyRequests(int userId);       
         int CreateNewRequest(CreateRequestViewModel request);
         void Approve(int id);
-        void Reject(int id);
+        void Reject(int id, string reaseon);
         void Delete(int id);
     }
 }
