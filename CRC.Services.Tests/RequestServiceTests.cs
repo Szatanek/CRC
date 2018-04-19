@@ -86,5 +86,34 @@ namespace CRC.Services.Tests
             // Then
             Assert.That(Reject, Throws.InstanceOf<ReasonRequiredWhenRejectException>());
         }
+
+        /// <summary>
+        /// W tym teście sprawdzimy, czy zapisywany Request ma wypełniony status Reason.
+        /// 
+        /// W sekcji Given należy przygotować requestRepositoryMock tak, aby dla podanego requestId zwrócił nam obiekt Reuquest.
+        /// 
+        /// W sekcji Then należy dodać weryfikację w obiekcie requestRepositoryMock.
+        /// Weryfikacja powinna się odbyć na metodzie Edit. 
+        /// Weryfikacja ma sprawdzać, czy metoda została wykonana z obiektem Request zawierającym uzupełnione pole Reason
+        /// </summary>
+        [Test]
+        public void ShouldSetReasonToRequestWhenClaim()
+        {
+            // Given
+            const int requestId = 5;
+            const string reason = "I need to do Production Release.";
+            var request = new Request
+            {
+                Id = requestId
+            };
+            // TODO: zainicjalizowanie oraz przygotowanie obiektów typu RequestService oraz requestRepository.
+
+            // When
+            // TODO: Wywołanie akcji Claim
+
+            // Then
+            // TODO: Zweryfikowanie, czy akcja Claim ustawiła pole reason w obiekcie request
+            Assert.That(request.Reason, Is.EqualTo(reason));
+        }
     }
 }
