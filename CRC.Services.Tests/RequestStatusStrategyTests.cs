@@ -73,6 +73,28 @@ namespace CRC.Services.Tests
         }
 
         /// <summary>
+        /// W tym teście zweryfikujemy, czy akcja Claim wyrzuci wyjątek InvalidRequestStatusWhenClaim.
+        /// Wyjątek powinien być wyrzucony, gdy Claim jest w statusie InProgress oraz Approved.
+        /// 
+        /// W sekcji When należy napisać lokalną metodę wywołującą akcję Claim
+        /// W sekcji Then należy zweryfikować, czy lokalna metoda wyrzuci odpowiedni wyjątek
+        /// </summary>
+        public void ClaimShouldThrowExceptionWhenStatusIsNotRejected(StatusEnum status)
+        {
+            // Given
+            var request = new Request
+            {
+                Status = status
+            };
+
+            // When
+            // TODO: Napisanie lokalnej metody wywołującej akcję Claim
+
+            // Then
+            // TODO: Weryfikacja, czy akcja Claim wyrzuci wyjątek ReasonRequiredWhenClaimException
+        }
+
+        /// <summary>
         /// W tym teście zweryfikujemy, czy akcja Claim wyrzuci wyjątek ReasonRequiredWhenClaimException.
         /// Wyjątek powinien być wyrzucony dla parametrów null oraz pusty string.
         /// 
@@ -102,6 +124,28 @@ namespace CRC.Services.Tests
         {
             // Given
             // TODO: Przygotowanie testu analogicznie do poprzedniego testu
+
+            // When
+            // TODO: Napisanie lokalnej metody wywołującej akcję Reject
+
+            // Then
+            // TODO: Weryfikacja, czy akcja Reject wyrzuci wyjątek ReasonRequiredWhenRejectException
+        }
+
+        /// <summary>
+        /// W tym teście zweryfikujemy, czy akcja Reject wyrzuci wyjątek InvalidRequestStatusWhenReject.
+        /// Wyjątek powinien być wyrzucony, gdy Claim jest w statusie InProgress oraz Approved.
+        /// 
+        /// W sekcji When należy napisać lokalną metodę wywołującą akcję Claim
+        /// W sekcji Then należy zweryfikować, czy lokalna metoda wyrzuci odpowiedni wyjątek
+        /// </summary>
+        public void RejectShouldThrowExceptionWhenStatusIsNotInProgress(StatusEnum status)
+        {
+            // Given
+            var request = new Request
+            {
+                Status = status
+            };
 
             // When
             // TODO: Napisanie lokalnej metody wywołującej akcję Reject
