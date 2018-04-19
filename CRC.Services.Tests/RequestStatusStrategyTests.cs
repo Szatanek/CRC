@@ -1,5 +1,7 @@
 ﻿using CRC.Repository.Enums;
 using CRC.Repository.Models;
+using CRC.Services.Exceptions;
+using CRC.Services.Services.StatusStrategy;
 using NUnit.Framework;
 
 namespace CRC.Services.Tests
@@ -19,6 +21,14 @@ namespace CRC.Services.Tests
     [TestFixture]
     public class RequestStatusStrategyTests
     {
+        private RequestStatusStrategy _requestStatusStrategy;
+
+        [SetUp]
+        public void Setup()
+        {
+            _requestStatusStrategy = new RequestStatusStrategy();
+        }
+
         /// <summary>
         /// W tym teście zweryfikujemy czy akcja Claim zmienia status obiektu Request na InProgress oraz czy ustawia pole reason.
         /// 
@@ -30,14 +40,18 @@ namespace CRC.Services.Tests
         {
             // Given
             const StatusEnum expectedStatus = StatusEnum.InProgress;
-            var request = new Request();
-            // TODO: utworzenie obiektu ServiceRequestStrategy.
+            const string reason = "I need to do Production Release.";
+            var request = new Request
+            {
+                Status = StatusEnum.Rejected
+            };
 
             // When
-            // TODO: wywołanie akcji Claim
+            _requestStatusStrategy.Claim(request, reason);
 
             // Then
             Assert.That(request.Status, Is.EqualTo(expectedStatus));
+            Assert.That(request.Reason, Is.EqualTo(reason));
         }
 
         /// <summary>
@@ -47,13 +61,17 @@ namespace CRC.Services.Tests
         public void ShouldSetStatusToApproved()
         {
             // Given
-            // TODO: Przygotowanie testu analogicznie do poprzedniego testu.
+            const StatusEnum expectedStatus = StatusEnum.Approved;
+            var request = new Request
+            {
+                Status = StatusEnum.InProgress
+            };
 
             // When
-            // TODO: Wywołanie akcji
+            _requestStatusStrategy.Approve(request);
 
             // Then
-            // TODO: Weryfikacja wykonania akcji
+            Assert.That(request.Status, Is.EqualTo(expectedStatus));
         }
 
         /// <summary>
@@ -63,13 +81,18 @@ namespace CRC.Services.Tests
         public void ShouldSetStatusToRejected()
         {
             // Given
-            // TODO: Przygotowanie testu analogicznie do poprzedniego testu.
+            const StatusEnum expectedStatus = StatusEnum.Rejected;
+            const string reason = "Too much priviledges on Production Environment";
+            var request = new Request
+            {
+                Status = StatusEnum.InProgress
+            };
 
             // When
-            // TODO: Wywołanie akcji
+            _requestStatusStrategy.Reject(request, reason);
 
             // Then
-            // TODO: Weryfikacja wykonania akcji
+            Assert.That(request.Status, Is.EqualTo(expectedStatus));
         }
 
         /// <summary>
@@ -79,19 +102,25 @@ namespace CRC.Services.Tests
         /// W sekcji When należy napisać lokalną metodę wywołującą akcję Claim
         /// W sekcji Then należy zweryfikować, czy lokalna metoda wyrzuci odpowiedni wyjątek
         /// </summary>
+        [TestCase(StatusEnum.InProgress)]
+        [TestCase(StatusEnum.Approved)]
         public void ClaimShouldThrowExceptionWhenStatusIsNotRejected(StatusEnum status)
         {
             // Given
+            const string reason = "I need to do Production Release.";
             var request = new Request
             {
                 Status = status
             };
 
             // When
-            // TODO: Napisanie lokalnej metody wywołującej akcję Claim
+            void Claim()
+            {
+                _requestStatusStrategy.Claim(request, reason);
+            }
 
             // Then
-            // TODO: Weryfikacja, czy akcja Claim wyrzuci wyjątek ReasonRequiredWhenClaimException
+            Assert.That(Claim, Throws.InstanceOf<InvalidRequestStatusWhenClaimException>());
         }
 
         /// <summary>
@@ -101,35 +130,50 @@ namespace CRC.Services.Tests
         /// W sekcji When należy napisać lokalną metodę wywołującą akcję Claim
         /// W sekcji Then należy zweryfikować, czy lokalna metoda wyrzuci odpowiedni wyjątek
         /// </summary>
+        [TestCase(null)]
+        [TestCase("")]
         public void ClaimShouldThrowExceptionWhenReasonIsNullOrEmpty(string reason)
         {
             // Given
             var request = new Request
             {
+                Status = StatusEnum.Rejected,
                 Reason = reason
             };
 
             // When
-            // TODO: Napisanie lokalnej metody wywołującej akcję Claim
+            void Claim()
+            {
+                _requestStatusStrategy.Claim(request, reason);
+            }
 
             // Then
-            // TODO: Weryfikacja, czy akcja Claim wyrzuci wyjątek ReasonRequiredWhenClaimException
+            Assert.That(Claim, Throws.InstanceOf<ReasonRequiredWhenClaimException>());
         }
 
         /// <summary>
         /// W tym teście zweryfikujemy, czy akcja Reject wyrzuci wyjątek ReasonRequiredWhenRejectException.
         /// Test należy uzupełnić analogicznie do poprzedniego testu.
         /// </summary>
+        [TestCase(null)]
+        [TestCase("")]
         public void RejectShouldThrowExceptionWhenReasonIsNullOrEmpty(string reason)
         {
             // Given
-            // TODO: Przygotowanie testu analogicznie do poprzedniego testu
+            var request = new Request
+            {
+                Status = StatusEnum.InProgress,
+                Reason = reason
+            };
 
             // When
-            // TODO: Napisanie lokalnej metody wywołującej akcję Reject
+            void Claim()
+            {
+                _requestStatusStrategy.Reject(request, reason);
+            }
 
             // Then
-            // TODO: Weryfikacja, czy akcja Reject wyrzuci wyjątek ReasonRequiredWhenRejectException
+            Assert.That(Claim, Throws.InstanceOf<ReasonRequiredWhenRejectException>());
         }
 
         /// <summary>
@@ -139,19 +183,25 @@ namespace CRC.Services.Tests
         /// W sekcji When należy napisać lokalną metodę wywołującą akcję Reject
         /// W sekcji Then należy zweryfikować, czy lokalna metoda wyrzuci odpowiedni wyjątek
         /// </summary>
+        [TestCase(StatusEnum.Approved)]
+        [TestCase(StatusEnum.Rejected)]
         public void RejectShouldThrowExceptionWhenStatusIsNotInProgress(StatusEnum status)
         {
             // Given
+            const string reason = "Too much priviledges on Production Environment";
             var request = new Request
             {
                 Status = status
             };
 
             // When
-            // TODO: Napisanie lokalnej metody wywołującej akcję Reject
+            void Claim()
+            {
+                _requestStatusStrategy.Reject(request, reason);
+            }
 
             // Then
-            // TODO: Weryfikacja, czy akcja Reject wyrzuci wyjątek ReasonRequiredWhenRejectException
+            Assert.That(Claim, Throws.InstanceOf<InvalidRequestStatusWhenRejectException>());
         }
 
         /// <summary>
@@ -161,6 +211,8 @@ namespace CRC.Services.Tests
         /// W sekcji When należy napisać lokalną metodę wywołującą akcję Approve
         /// W sekcji Then należy zweryfikować, czy lokalna metoda wyrzuci odpowiedni wyjątek
         /// </summary>
+        [TestCase(StatusEnum.Approved)]
+        [TestCase(StatusEnum.Rejected)]
         public void ApproveShouldThrowExceptionWhenStatusIsNotInProgress(StatusEnum status)
         {
             // Given
@@ -170,10 +222,13 @@ namespace CRC.Services.Tests
             };
 
             // When
-            // TODO: Napisanie lokalnej metody wywołującej akcję Reject
+            void Approve()
+            {
+                _requestStatusStrategy.Approve(request);
+            }
 
             // Then
-            // TODO: Weryfikacja, czy akcja Reject wyrzuci wyjątek ReasonRequiredWhenRejectException
+            Assert.That(Approve, Throws.InstanceOf<InvalidRequestStatusWhenApproveException>());
         }
     }
 }

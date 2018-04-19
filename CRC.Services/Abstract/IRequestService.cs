@@ -11,5 +11,6 @@ namespace CRC.Services.Abstract
         void Approve(int id);
         void Reject(int id, string reaseon);
         void Delete(int id);
+        void Claim(int requestId, string reason);
     }
 }

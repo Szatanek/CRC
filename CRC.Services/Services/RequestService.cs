@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CRC.Repository.Enums;
 using CRC.Services.Exceptions;
+using CRC.Services.Services.StatusStrategy;
 using Microsoft.EntityFrameworkCore;
 
 namespace CRC.Services.Services
@@ -15,11 +16,16 @@ namespace CRC.Services.Services
     {
         private readonly IGenericRepository<Request> _requestRepository;
         private readonly IGenericRepository<ProvisionedPermission> _permissionRepository;
+        private readonly IRequestStatusStrategy _requestStatusStrategy;
 
-        public RequestService(IGenericRepository<Request> requestRepository, IGenericRepository<ProvisionedPermission> permissionRepository)
+        public RequestService(
+            IGenericRepository<Request> requestRepository,
+            IGenericRepository<ProvisionedPermission> permissionRepository,
+            IRequestStatusStrategy requestStatusStrategy)
         {
             _requestRepository = requestRepository;
             _permissionRepository = permissionRepository;
+            _requestStatusStrategy = requestStatusStrategy;
         }
         public IEnumerable<ReadRequestViewModel> GetAllIRequests()
         {
@@ -43,7 +49,7 @@ namespace CRC.Services.Services
         public void Approve(int id)
         {
             var request = _requestRepository.GetById(id);
-            request.Status = StatusEnum.Approved;
+            _requestStatusStrategy.Approve(request);
             _requestRepository.Edit(request);
 
             //create permission object
@@ -53,14 +59,8 @@ namespace CRC.Services.Services
 
         public void Reject(int id, string reason)
         {
-            if (string.IsNullOrEmpty(reason))
-            {
-                throw new ReasonRequiredWhenRejectException();
-            }
-
             var request = _requestRepository.GetById(id);
-            request.Status = StatusEnum.Rejected;
-            request.Reason = reason;
+            _requestStatusStrategy.Reject(request, reason);
             _requestRepository.Edit(request);           
         }
 
@@ -68,6 +68,13 @@ namespace CRC.Services.Services
         {
             var request = _requestRepository.GetById(id);
             _requestRepository.Delete(request);
+        }
+
+        public void Claim(int id, string reason)
+        {
+            var request = _requestRepository.GetById(id);
+            _requestStatusStrategy.Claim(request, reason);
+            _requestRepository.Edit(request);
         }
     }
 }

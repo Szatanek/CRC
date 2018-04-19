@@ -44,9 +44,9 @@ namespace CRC.Controllers
         }
 
         [HttpPut("reject/{id}")]
-        public IActionResult Reject(int id)
+        public IActionResult Reject(int id, [FromBody]string reason)
         {
-            _requestService.Reject(id);
+            _requestService.Reject(id, reason);
             return Ok();
         }
 

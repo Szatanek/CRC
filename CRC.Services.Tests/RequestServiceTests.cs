@@ -1,8 +1,10 @@
 ﻿using System.Linq.Expressions;
 using CRC.Repository.Abstract;
+using CRC.Repository.Enums;
 using CRC.Repository.Models;
 using CRC.Services.Exceptions;
 using CRC.Services.Services;
+using CRC.Services.Services.StatusStrategy;
 using Moq;
 using NUnit.Framework;
 
@@ -21,6 +23,17 @@ namespace CRC.Services.Tests
     [TestFixture]
     public class RequestServiceTests
     {
+        private Mock<IGenericRepository<Request>> _requestRepositoryMock;
+        private RequestService _requestService;
+
+        [SetUp]
+        public void Setup()
+        {
+            var strategy = new RequestStatusStrategy();
+            _requestRepositoryMock = new Mock<IGenericRepository<Request>>();
+            _requestService = new RequestService(_requestRepositoryMock.Object, null, strategy);
+        }
+
         /// <summary>
         /// W tym teście sprawdzimy, czy zapisywany Request ma wypełniony status Reason.
         /// 
@@ -36,21 +49,19 @@ namespace CRC.Services.Tests
             // Given
             const int requestId = 5;
             const string reason = "Too much priviledges on Production Environment";
-            var requestRepositoryMock = new Mock<IGenericRepository<Request>>();
-            var service = new RequestService(requestRepositoryMock.Object, null);
             var testRequest = new Request
             {
                 Id = requestId
             };
 
-            requestRepositoryMock.Setup(r => r.GetById(requestId))
+            _requestRepositoryMock.Setup(r => r.GetById(requestId))
                 .Returns(testRequest);
 
             // When
-            service.Reject(requestId, reason);
+            _requestService.Reject(requestId, reason);
 
             // Then
-            requestRepositoryMock.Verify(
+            _requestRepositoryMock.Verify(
                 repository => repository.Edit(
                     It.Is<Request>(request => VerifyEditRequest(request, requestId, reason))),
                 Times.Once);
@@ -70,12 +81,11 @@ namespace CRC.Services.Tests
         {
             // Given
             const int requestId = 5;
-            var service = new RequestService(null, null);
 
             // When
             void Reject()
             {
-                service.Reject(requestId, reason);
+                _requestService.Reject(requestId, reason);
             }
 
             // Then
@@ -95,20 +105,27 @@ namespace CRC.Services.Tests
         public void ShouldSetReasonToRequestWhenClaim()
         {
             // Given
-            const int requestId = 5;
+            const int requestId = 8;
             const string reason = "I need to do Production Release.";
-            var request = new Request
+            var requestToClaim = new Request
             {
-                Id = requestId
+                Id = requestId,
+                Status = StatusEnum.Rejected
             };
-            // TODO: zainicjalizowanie oraz przygotowanie obiektów typu RequestService oraz requestRepository.
+
+            _requestRepositoryMock.Setup(repository => repository.GetById(requestId))
+                .Returns(requestToClaim);
 
             // When
-            // TODO: Wywołanie akcji Claim
+            _requestService.Claim(requestId, reason);
 
             // Then
-            // TODO: Zweryfikowanie, czy akcja Claim ustawiła pole reason w obiekcie request
-            Assert.That(request.Reason, Is.EqualTo(reason));
+            Assert.That(requestToClaim.Reason, Is.EqualTo(reason));
+            _requestRepositoryMock
+                .Verify(
+                    repository => repository.Edit(
+                        It.Is<Request>(request => VerifyEditRequest(request, requestId, reason))),
+                    Times.Once);
         }
 
         private static bool VerifyEditRequest(Request request, int requestId, string reason)
