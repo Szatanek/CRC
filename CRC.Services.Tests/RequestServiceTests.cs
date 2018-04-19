@@ -56,11 +56,6 @@ namespace CRC.Services.Tests
                 Times.Once);
         }
 
-        private static bool VerifyEditRequest(Request request, int requestId, string reason)
-        {
-            return request.Id == requestId && request.Reason == reason;
-        }
-
         /// <summary>
         /// W tym teście sprawdzimy, czy aplikacja rzuci odpowiednim wyjątkiem, jeśli pole reason jest nieprawidłowe.
         /// 
@@ -114,6 +109,11 @@ namespace CRC.Services.Tests
             // Then
             // TODO: Zweryfikowanie, czy akcja Claim ustawiła pole reason w obiekcie request
             Assert.That(request.Reason, Is.EqualTo(reason));
+        }
+
+        private static bool VerifyEditRequest(Request request, int requestId, string reason)
+        {
+            return request.Id == requestId && request.Reason == reason;
         }
     }
 }

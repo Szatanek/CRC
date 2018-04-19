@@ -20,7 +20,7 @@ namespace CRC.Services.Tests
     public class RequestStatusStrategyTests
     {
         /// <summary>
-        /// W tym teście zweryfikujemy czy akcja Claim zmienia status obiektu Request na InProgress.
+        /// W tym teście zweryfikujemy czy akcja Claim zmienia status obiektu Request na InProgress oraz czy ustawia pole reason.
         /// 
         /// W sekcji Given należy uzupełnić kod utworzenia obiektu RequestStatusStrategy. 
         /// W sekcji When należy uzupełnić kod wywołania akcji.
@@ -57,7 +57,7 @@ namespace CRC.Services.Tests
         }
 
         /// <summary>
-        /// W tym teście zweryfikujemy czy akcja Reject zmienia status obiektu Request na Rejected.
+        /// W tym teście zweryfikujemy czy akcja Reject zmienia status obiektu Request na Rejected oraz czy ustawia pole reason.
         /// </summary>
         [Test]
         public void ShouldSetStatusToRejected()
@@ -134,12 +134,34 @@ namespace CRC.Services.Tests
 
         /// <summary>
         /// W tym teście zweryfikujemy, czy akcja Reject wyrzuci wyjątek InvalidRequestStatusWhenReject.
-        /// Wyjątek powinien być wyrzucony, gdy Claim jest w statusie InProgress oraz Approved.
+        /// Wyjątek powinien być wyrzucony, gdy Request jest w statusie Approved oraz Rejected.
         /// 
-        /// W sekcji When należy napisać lokalną metodę wywołującą akcję Claim
+        /// W sekcji When należy napisać lokalną metodę wywołującą akcję Reject
         /// W sekcji Then należy zweryfikować, czy lokalna metoda wyrzuci odpowiedni wyjątek
         /// </summary>
         public void RejectShouldThrowExceptionWhenStatusIsNotInProgress(StatusEnum status)
+        {
+            // Given
+            var request = new Request
+            {
+                Status = status
+            };
+
+            // When
+            // TODO: Napisanie lokalnej metody wywołującej akcję Reject
+
+            // Then
+            // TODO: Weryfikacja, czy akcja Reject wyrzuci wyjątek ReasonRequiredWhenRejectException
+        }
+
+        /// <summary>
+        /// W tym teście zweryfikujemy, czy akcja Approve wyrzuci wyjątek InvalidRequestStatusWhenApprove.
+        /// Wyjątek powinien być wyrzucony, gdy Request jest w statusie Approved oraz Rejected.
+        /// 
+        /// W sekcji When należy napisać lokalną metodę wywołującą akcję Approve
+        /// W sekcji Then należy zweryfikować, czy lokalna metoda wyrzuci odpowiedni wyjątek
+        /// </summary>
+        public void ApproveShouldThrowExceptionWhenStatusIsNotInProgress(StatusEnum status)
         {
             // Given
             var request = new Request
