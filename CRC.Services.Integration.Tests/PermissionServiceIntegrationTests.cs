@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using CRC.Repository.Enums;
 using CRC.Repository.Models;
+using CRC.Repository.Repository;
 using CRC.Services.Integration.Tests.Base;
 using CRC.Services.Services;
 using NUnit.Framework;
@@ -24,7 +26,8 @@ namespace CRC.Services.Integration.Tests
         [SetUp]
         public void Setup()
         {
-            // TODO: Initialize PermissionService with Repository. Use AppContext from base class.
+            var permissionRepository = new GenericRepository<ProvisionedPermission>(Context);
+            _permissionService = new PermissionService(permissionRepository);
         }
 
         /// <summary>
@@ -39,17 +42,20 @@ namespace CRC.Services.Integration.Tests
         {
             // Given
             const int expectedPermissionsCount = 3;
-            const int myTestUser = 8;
-            
-            // TODO: Initialize database - create User and add Permissions to this User
+            const int myTestUserId = 8;
+            Context.Users.Add(CreateTestUser(myTestUserId));
+            Context.ProvisionedPermissions.Add(CreatePermissionForUser(myTestUserId, PermissionsEnum.Admin, ServersEnum.Dev));
+            Context.ProvisionedPermissions.Add(CreatePermissionForUser(myTestUserId, PermissionsEnum.Hpa, ServersEnum.Acc));
+            Context.ProvisionedPermissions.Add(CreatePermissionForUser(myTestUserId, PermissionsEnum.ReadOnly, ServersEnum.Prd));
+            Context.SaveChanges();
 
             // When
-            var requests = _permissionService.GetMyPermissions(myTestUser);
+            var requests = _permissionService.GetMyPermissions(myTestUserId);
 
             // Then
             Assert.That(requests, Is.Not.Null);
             Assert.That(requests, Is.Not.Empty);
-            // TODO: Verify if permission count is equal to expected.
+            Assert.That(requests.Count(), Is.EqualTo(expectedPermissionsCount));
         }
 
         /// <summary>
@@ -67,14 +73,16 @@ namespace CRC.Services.Integration.Tests
             // Given
             const int myTestUserId = 3;
             const int notMyUserId = 2;
-
-            // TODO: Initialize Users with myTestUserId and notMyUserId. Add Permissions to notMyUserId.
+            Context.Users.Add(CreateTestUser(myTestUserId));
+            Context.Users.Add(CreateTestUser(notMyUserId));
+            Context.ProvisionedPermissions.Add(CreatePermissionForUser(notMyUserId, PermissionsEnum.Admin, ServersEnum.Dev));
 
             // When
-            // TODO: Get permissions for MyTestUserId.
+            var requests = _permissionService.GetMyPermissions(myTestUserId);
 
             // Then
-            // TODO: Verify if myTestUserPermissions is not null, but is empty.
+            Assert.That(requests, Is.Not.Null);
+            Assert.That(requests, Is.Empty);
         }
 
         private User CreateTestUser(int userId)
