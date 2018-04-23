@@ -1,0 +1,23 @@
+<button type="button" class="btn btn-default" data-toggle="modal" data-target="#claimModal">
+  Claim
+</button>
+<div class="modal fade" id="claimModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Claim request</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <label>Reason</label>
+          <textarea class="form-control" [(ngModel)]="reason">
+            </textarea>
+        </div>
+      </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="claim()">Claim</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+  </div>

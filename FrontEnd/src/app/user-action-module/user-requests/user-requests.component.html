@@ -22,6 +22,9 @@
             <td>{{request.additionalInfo}}</td>
             <td>{{request.status}}</td>
             <td>
+                <div *ngIf="request.status === 'Rejected'">
+                    <app-claim-request (requestClaimed)="requestClaimedListener($event)" [requestId]="request.id"></app-claim-request>
+                </div>
                 <button type="button" class="close" (click)="remove(request.id)">&times;</button>
             </td>
         </tr>

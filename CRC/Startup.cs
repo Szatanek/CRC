@@ -7,6 +7,7 @@ using CRC.Repository.Models;
 using CRC.Repository.Repository;
 using CRC.Services.Abstract;
 using CRC.Services.Services;
+using CRC.Services.Services.StatusStrategy;
 using CRC.Services.ViewModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,6 +38,7 @@ namespace CRC
             services.AddTransient<IRequestService, RequestService>();
             services.AddTransient<IPermissionService, PermissionService>();
             services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<IRequestStatusStrategy, RequestStatusStrategy>();
 
             services.AddCors();
 

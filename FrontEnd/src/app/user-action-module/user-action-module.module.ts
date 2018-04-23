@@ -8,13 +8,15 @@ import { AddPermissionService } from './add-permission/permission-request.servic
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { RequestsService } from './user-permissions/requests.service';
+import { ClaimRequestComponent } from './claim-request/claim-request.component';
+import { ClaimRequestService } from './claim-request/claim-request.service';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
   ],
-  declarations: [UserPermissionsComponent, UserRequestsComponent, AddPermissionComponent],
+  declarations: [UserPermissionsComponent, UserRequestsComponent, AddPermissionComponent, ClaimRequestComponent],
   exports: [UserPermissionsComponent, UserRequestsComponent],
-  providers: [UserRequestService, AddPermissionService, RequestsService]
+  providers: [UserRequestService, AddPermissionService, RequestsService, ClaimRequestService]
 })
 export class UserActionModuleModule { }

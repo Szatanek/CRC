@@ -33,4 +33,9 @@ export class UserRequestsComponent implements OnInit {
     console.log(info);
     this.getUserPermissionRequests();
   }
+
+  requestClaimedListener(info){
+    console.log(info);
+    this.getUserPermissionRequests();
+  }
 }

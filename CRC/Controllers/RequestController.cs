@@ -50,6 +50,13 @@ namespace CRC.Controllers
             return Ok();
         }
 
+        [HttpPut("claim/{id}")]
+        public IActionResult Claim(int id, [FromBody]string reason)
+        {
+            _requestService.Claim(id, reason);
+            return Ok();
+        }
+
         [HttpDelete("delete/{id}")]
         public IActionResult Delete(int id)
         {

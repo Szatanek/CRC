@@ -34,6 +34,7 @@ namespace CRC.Services.Integration.Tests.Base
             _context.RolesSimplies.Clear();
             _context.Roles.Clear();
             _context.Users.Clear();
+            _context.SaveChanges();
         }
 
         [OneTimeTearDown]
@@ -44,11 +45,12 @@ namespace CRC.Services.Integration.Tests.Base
                 _context.Dispose();
                 _context = null;
             }
+
         }
 
         private void ConfigureMapper()
         {
-
+            Mapper.Reset();
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<User, UserViewModel>();

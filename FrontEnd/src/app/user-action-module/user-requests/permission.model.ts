@@ -1,4 +1,5 @@
 export class PermissionModel {
+    id: number;
     name: string;
     serverName: string;
     serverAddress: string;
